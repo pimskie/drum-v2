@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    // https://lit.dev/docs/components/decorators/#enabling-decorators
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "paths": {
+      "@/*": ["src/js/*"] // enables us to use @components/MyComponent
+    }
+  },
+  "include": ["src"]
+}
