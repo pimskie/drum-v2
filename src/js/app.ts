@@ -1,10 +1,14 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, state, property } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { Ref, ref, createRef } from 'lit/directives/ref.js';
+
+import { Sample } from '@/types/Sample';
 
 import { loadLibrary } from '@/utils/library-loader';
 import '@/components/rack';
 import '@/components/sequencer';
+
+import { Output } from '@/audio-components/output';
 
 import XRack from '@/components/rack';
 
@@ -28,8 +32,13 @@ export default class App extends LitElement {
   @state()
   protected _sampleLibrary?: Map<string, AudioBuffer>;
 
+  @state()
+  protected _output: Output;
+
   constructor() {
     super();
+
+    this._output = new Output();
 
     this._init();
   }
@@ -41,7 +50,7 @@ export default class App extends LitElement {
   private async _loadLibrary() {
     this._isLoading = true;
 
-    this._sampleLibrary = await loadLibrary();
+    this._output.sampleLibrary = await loadLibrary();
 
     this._isLoading = false;
   }
@@ -50,7 +59,13 @@ export default class App extends LitElement {
     const { detail } = e;
     const { step } = detail;
 
-    this._rackElement.value!.getActiveSamples(step);
+    const activeSamples = this._rackElement.value!.getActiveSamples(step);
+
+    this._playSamples(activeSamples);
+  }
+
+  private _playSamples(samples: Sample[]) {
+    samples.forEach((sample) => this._output.playSample(sample));
   }
 
   protected render() {
