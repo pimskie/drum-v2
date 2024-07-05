@@ -1,10 +1,10 @@
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, queryAll } from 'lit/decorators.js';
 import { html, css, LitElement } from 'lit';
 
 import '@/components/pad';
-import { Sample } from '@/types/Sample';
+import XPad from '@/components/pad';
 
-const STEPS = 10;
+import { Sample } from '@/types/Sample';
 
 @customElement('x-row')
 export default class Row extends LitElement {
@@ -17,17 +17,29 @@ export default class Row extends LitElement {
   `;
 
   @property({ type: Number })
-  steps: Number = 10;
+  steps: number = 10;
 
-  @property({ type: Sample })
+  @property({ type: String })
   sample: Sample = Sample.bassdrum;
 
-  render() {
-    const stepsArray = new Array(STEPS).fill(0);
+  @queryAll('x-pad')
+  private _padElements!: XPad[];
+
+  public isActive(step: number): boolean {
+    const currentPad = this._padElements[step];
+
+    return currentPad.isActive;
+  }
+
+  protected render() {
+    const stepsArray = new Array(this.steps).fill(0);
 
     return html`
       <div class="row" style="--steps: ${this.steps}">
-        ${stepsArray.map(() => html`<x-pad sample="${this.sample}" />`)}
+        ${stepsArray.map(
+          (_, index) =>
+            html`<x-pad data-index="${index}" sample="${this.sample}" />`,
+        )}
       </div>
     `;
   }
