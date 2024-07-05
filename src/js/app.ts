@@ -1,9 +1,12 @@
-import { customElement, state } from 'lit/decorators.js';
 import { LitElement, html, css } from 'lit';
+import { customElement, state, property } from 'lit/decorators.js';
+import { Ref, ref, createRef } from 'lit/directives/ref.js';
 
 import { loadLibrary } from '@/utils/library-loader';
 import '@/components/rack';
 import '@/components/sequencer';
+
+import XRack from '@/components/rack';
 
 @customElement('x-app')
 export default class App extends LitElement {
@@ -15,6 +18,9 @@ export default class App extends LitElement {
       gap: var(--size-6);
     }
   `;
+
+  @state()
+  protected _rackElement: Ref<XRack> = createRef();
 
   @state()
   protected _isLoading: boolean = false;
@@ -44,13 +50,13 @@ export default class App extends LitElement {
     const { detail } = e;
     const { step } = detail;
 
-    console.log(step);
+    this._rackElement.value!.getActiveSamples(step);
   }
 
   protected render() {
     return html`
       <div class="app">
-        <x-rack></x-rack>
+        <x-rack ${ref(this._rackElement)}></x-rack>
         <x-sequencer @step-changed="${this._onStepChanged}"></x-sequencer>
       </div>
     `;

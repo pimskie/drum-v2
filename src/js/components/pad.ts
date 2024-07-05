@@ -1,12 +1,11 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 import { Sample } from '@/types/Sample';
-
 import { padColors } from '@/config/pad-colors';
 
 @customElement('x-pad')
-export class Pad extends LitElement {
+export default class Pad extends LitElement {
   static styles = css`
     .pad {
       width: 100%;
@@ -32,16 +31,16 @@ export class Pad extends LitElement {
   @property()
   sample: Sample = Sample.hihat;
 
-  @state()
-  protected _isActive: boolean = false;
+  @property({ type: Boolean, reflect: true })
+  isActive: boolean = false;
 
   toggle() {
-    this._isActive = !this._isActive;
+    this.isActive = !this.isActive;
   }
 
   render() {
     return html`<button
-      class="pad ${this._isActive ? css`is-active` : css``}"
+      class="pad ${this.isActive ? css`is-active` : css``}"
       style="--border-color: ${padColors[this.sample]}"
       @click="${this.toggle}"
     >
