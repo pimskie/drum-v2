@@ -3,12 +3,16 @@ import { LitElement, html, css } from 'lit';
 
 import { loadLibrary } from '@/utils/library-loader';
 import '@/components/rack';
+import '@/components/sequencer';
 
 @customElement('x-app')
 export default class App extends LitElement {
   static styles = css`
     .app {
       position: relative;
+
+      display: grid;
+      gap: var(--size-6);
     }
   `;
 
@@ -21,10 +25,14 @@ export default class App extends LitElement {
   constructor() {
     super();
 
-    this.loadLibrary();
+    this._init();
   }
 
-  async loadLibrary() {
+  private async _init() {
+    await this._loadLibrary();
+  }
+
+  private async _loadLibrary() {
     this._isLoading = true;
 
     this._sampleLibrary = await loadLibrary();
@@ -32,10 +40,18 @@ export default class App extends LitElement {
     this._isLoading = false;
   }
 
-  render() {
+  private _onStepChanged(e: CustomEvent) {
+    const { detail } = e;
+    const { step } = detail;
+
+    console.log(step);
+  }
+
+  protected render() {
     return html`
       <div class="app">
         <x-rack></x-rack>
+        <x-sequencer @step-changed="${this._onStepChanged}"></x-sequencer>
       </div>
     `;
   }
