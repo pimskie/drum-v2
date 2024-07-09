@@ -31,15 +31,19 @@ export default class Row extends LitElement {
     return currentPad.isActive;
   }
 
+  private _onDelete() {
+    this.dispatchEvent(new Event('delete'));
+  }
+
   protected render() {
     const stepsArray = new Array(this.steps).fill(0);
 
     return html`
-      <div class="row" style="--steps: ${this.steps}">
-        ${stepsArray.map(
-          (_, index) =>
-            html`<x-pad data-index="${index}" sample="${this.sample}" />`,
-        )}
+      <div class="row" style="--steps: ${this.steps + 1}">
+        ${stepsArray.map((_, index) => {
+          return html` <x-pad data-index="${index}" sample="${this.sample}"></x-pad> `;
+        })}
+        <button @click="${this._onDelete}">x</button>
       </div>
     `;
   }
