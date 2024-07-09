@@ -50,7 +50,9 @@ export default class App extends LitElement {
   private async _loadLibrary() {
     this._isLoading = true;
 
-    this._output.sampleLibrary = await loadLibrary();
+    this._sampleLibrary = await loadLibrary();
+
+    this._output.sampleLibrary = this._sampleLibrary;
 
     this._isLoading = false;
   }

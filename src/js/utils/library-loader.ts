@@ -1,10 +1,12 @@
-import { Sample } from '@/types/Sample';
+import { allSamples } from '@/config/samples';
 
 interface SampleLoadResonse {
   url: string;
   name: string;
   audioBuffer: AudioBuffer;
 }
+
+const library = new Map();
 
 const context = new AudioContext();
 
@@ -23,11 +25,8 @@ const loadSample = async ({ name, url }: { name: string; url: string }) => {
 };
 
 const loadLibrary = async () => {
-  const library = new Map();
-
-  const sampleNames: string[] = Object.values(Sample);
-
-  const promises = sampleNames.map((sampleName) =>
+  // samples to start with
+  const promises = allSamples.map((sampleName) =>
     loadSample({
       url: `/audio/${sampleName}.wav`,
       name: sampleName,
