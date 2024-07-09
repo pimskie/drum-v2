@@ -1,14 +1,16 @@
 {
   "name": "challenge",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "preversion": "npm run lint",
+    "postversion": "git push && git push --tags"
   },
   "devDependencies": {
     "@eslint/js": "^9.6.0",
