@@ -102,7 +102,7 @@ export default class Sequencer extends LitElement {
     const stepsElements = new Array(this.steps).fill(0).map((_, i) => html` <div class="sequencer__step ${this._currentStep === i ? css`is-active` : css``}">${i + 1}</div> `);
 
     return html`
-      <div class="sequencer" style="--steps: ${this.steps}">
+      <div class="sequencer" style="--steps: ${this.steps + 1}">
         <div class="sequencer__steps">${stepsElements}</div>
         <div class="sequencer__controls">
           <div>

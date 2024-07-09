@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 import '@/components/row';
 
 import XRow from '@/components/row';
+import '@/components/sample-selector';
 import { Sample } from '@/types/Sample';
 import { defaultSamples, allSamples } from '@/config/samples';
 
@@ -33,36 +34,36 @@ export default class Rack extends LitElement {
     return activeSamples;
   }
 
-  private _addRow() {
-    // oldie but golie: re-assign to trigger re-render
-    const [firstAvailableSample] = this._getAvailableSampleOptions();
-
-    this.samples = [...this.samples, firstAvailableSample];
-  }
-
   private _getAvailableSampleOptions() {
     return allSamples.filter((s) => !this.samples.includes(s));
   }
 
-  private _renderAddRow() {
+  private _onAddRow(e: CustomEvent) {
+    this.samples = [...this.samples, e.detail.sample];
+  }
+
+  private _onDeleteRow(e: Event) {
+    const row = e.target! as XRow;
+
+    this.samples = this.samples.filter((s) => s !== row.sample);
+  }
+
+  private _renderSampleSelect() {
     const availableSamples = this._getAvailableSampleOptions();
 
-    if (!availableSamples.length) {
-      return;
+    if (availableSamples.length) {
+      return html` <x-sample-selector .samples="${availableSamples}" @add-sample="${this._onAddRow}"></x-sample-selector> `;
     }
 
-    return html`<button @click="${this._addRow}">Add</button>`;
+    return;
   }
 
   render() {
     return html`
       <h1>Samples</h1>
-
-      ${this._getAvailableSampleOptions()}
-
       <div class="rack">
-        <div class="rack__rows">${this.samples.map((sample) => html`<x-row sample="${sample}" />`)}</div>
-        <div class="rack__controls">${this._renderAddRow()}</div>
+        <div class="rack__rows">${this.samples.map((sample) => html`<x-row sample="${sample}" @delete="${this._onDeleteRow}" />`)}</div>
+        <div class="rack__controls">${this._renderSampleSelect()}</div>
       </div>
     `;
   }
