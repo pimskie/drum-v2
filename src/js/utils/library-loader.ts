@@ -8,26 +8,18 @@ interface SampleLoadResonse {
 
 const context = new AudioContext();
 
-const loadSample = async ({
-  url,
-  name,
-}: {
-  url: string;
-  name: string;
-}): Promise<SampleLoadResonse> => {
-  return new Promise(async (resolve) => {
-    const response = await fetch(url);
-    const buffer = await response.arrayBuffer();
-    const audioBuffer = await context.decodeAudioData(buffer);
+const loadSample = async ({ name, url }: { name: string; url: string }) => {
+  const response = await fetch(url);
+  const buffer = await response.arrayBuffer();
+  const audioBuffer = await context.decodeAudioData(buffer);
 
-    const loadResponse: SampleLoadResonse = {
-      url,
-      name,
-      audioBuffer,
-    };
+  const loadResponse: SampleLoadResonse = {
+    url,
+    name,
+    audioBuffer,
+  };
 
-    return resolve(loadResponse);
-  });
+  return loadResponse;
 };
 
 const loadLibrary = async () => {
