@@ -106,8 +106,7 @@ export default class Sequencer extends LitElement {
         <div class="sequencer__steps">${stepsElements}</div>
         <div class="sequencer__controls">
           <div>
-            <button @click="${this._toggle}">${this._isActive}</button>
-            (${this._currentStep})
+            <button @click="${this._toggle}">${this._isActive ? 'Stop' : 'Play'}</button>
           </div>
 
           <input ${ref(this._tempoElement)} type="range" min="0" max="1" step="0.1" @input="${this._onTempoSliderChanged}" />
