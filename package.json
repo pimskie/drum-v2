@@ -9,8 +9,7 @@
     "lint": "eslint",
     "preview": "vite preview",
     "prepare": "husky",
-    "preversion": "npm run lint",
-    "postversion": "git push && git push --tags"
+    "preversion": "npm run lint"
   },
   "devDependencies": {
     "@eslint/js": "^9.6.0",
