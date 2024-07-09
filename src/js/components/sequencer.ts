@@ -99,19 +99,7 @@ export default class Sequencer extends LitElement {
   }
 
   protected render() {
-    const stepsElements = new Array(this.steps)
-      .fill(0)
-      .map(
-        (_, i) => html`
-          <div
-            class="sequencer__step ${this._currentStep === i
-              ? css`is-active`
-              : css``}"
-          >
-            ${i + 1}
-          </div>
-        `,
-      );
+    const stepsElements = new Array(this.steps).fill(0).map((_, i) => html` <div class="sequencer__step ${this._currentStep === i ? css`is-active` : css``}">${i + 1}</div> `);
 
     return html`
       <div class="sequencer" style="--steps: ${this.steps}">
@@ -122,14 +110,7 @@ export default class Sequencer extends LitElement {
             (${this._currentStep})
           </div>
 
-          <input
-            ${ref(this._tempoElement)}
-            type="range"
-            min="0"
-            max="1"
-            step="0.1"
-            @input="${this._onTempoSliderChanged}"
-          />
+          <input ${ref(this._tempoElement)} type="range" min="0" max="1" step="0.1" @input="${this._onTempoSliderChanged}" />
         </div>
       </div>
     `;

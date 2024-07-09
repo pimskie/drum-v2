@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 import { Sample } from '@/types/Sample';
 import { padColors } from '@/config/pad-colors';
@@ -45,12 +45,6 @@ export default class Pad extends LitElement {
   }
 
   render() {
-    return html`<button
-      class="pad ${this.isActive ? css`is-active` : css``}"
-      style="--border-color: ${padColors[this.sample]}"
-      @click="${this.toggle}"
-    >
-      ${this.sample}
-    </button> `;
+    return html`<button class="pad ${this.isActive ? css`is-active` : css``}" style="--border-color: ${padColors[this.sample]}" @click="${this.toggle}">${this.sample}</button> `;
   }
 }
