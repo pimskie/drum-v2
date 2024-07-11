@@ -2,8 +2,8 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { html, css, LitElement } from 'lit';
 import { Ref, ref, createRef } from 'lit/directives/ref.js';
 
-import { getNextStep } from '@/utils/stepper';
-import { getTempo } from '@/utils/get-tempo';
+import { wrapIndex } from '@/utils/wrap-index';
+import { getInterval } from '@/utils/get-interval';
 
 @customElement('x-sequencer')
 export default class Sequencer extends LitElement {
@@ -67,7 +67,7 @@ export default class Sequencer extends LitElement {
   private _start() {
     clearInterval(this._intervalId);
 
-    this._intervalId = setInterval(() => {
+    this._intervalId = window.setInterval(() => {
       this._updateStep();
     }, this.tempo);
   }
@@ -79,7 +79,7 @@ export default class Sequencer extends LitElement {
   }
 
   private _updateStep() {
-    this._currentStep = getNextStep(this._currentStep, this.steps);
+    this._currentStep = wrapIndex(this._currentStep, this.steps);
 
     const event = new CustomEvent('step-changed', {
       detail: {
@@ -93,7 +93,7 @@ export default class Sequencer extends LitElement {
   private _onTempoSliderChanged() {
     const sliderValue = this._tempoElement.value!.valueAsNumber;
 
-    this.tempo = getTempo(sliderValue);
+    this.tempo = getInterval(sliderValue);
 
     this._start();
   }

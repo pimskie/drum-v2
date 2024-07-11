@@ -34,18 +34,26 @@ export default class Rack extends LitElement {
     return activeSamples;
   }
 
+  public addRow(sample: Sample) {
+    this.samples = [...this.samples, sample];
+  }
+
+  public deleteRow(sample: Sample) {
+    this.samples = this.samples.filter((s) => s !== sample);
+  }
+
   private _getAvailableSampleOptions() {
     return allSamples.filter((s) => !this.samples.includes(s));
   }
 
   private _onAddRow(e: CustomEvent) {
-    this.samples = [...this.samples, e.detail.sample];
+    this.addRow(e.detail.sample);
   }
 
   private _onDeleteRow(e: Event) {
     const row = e.target! as XRow;
 
-    this.samples = this.samples.filter((s) => s !== row.sample);
+    this.deleteRow(row.sample);
   }
 
   private _renderSampleSelect() {
