@@ -19,10 +19,15 @@ export default class Row extends LitElement {
       grid-template-columns: repeat(var(--steps), 1fr);
       gap: var(--size-6);
     }
+
+    .volume-input {
+      padding: 0.75rem;
+      width: 3rem;
+    }
   `;
 
   @property({ type: Number })
-  steps: number = 10;
+  steps: number = 12;
 
   @property({ type: String })
   sample: Sample = Sample.bassdrum;
@@ -54,8 +59,10 @@ export default class Row extends LitElement {
 
     return html`
       <div class="row" style="--steps: ${this.steps}">
-        <div class="row__volume">
+        <div class="row__config">
+          <div class="row__label">${this.sample}</div>
           <input
+            class="volume-input"
             type="number"
             min="0"
             max="1"
