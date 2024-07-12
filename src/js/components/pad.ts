@@ -8,7 +8,7 @@ import { padColors } from '@/config/pad-colors';
 export default class Pad extends LitElement {
   static styles = css`
     .pad {
-      width: 100%;
+      width: 4rem;
       aspect-ratio: 1/1;
       padding: var(--size-2);
 
@@ -45,6 +45,12 @@ export default class Pad extends LitElement {
   }
 
   render() {
-    return html`<button class="pad ${this.isActive ? css`is-active` : css``}" style="--border-color: ${padColors[this.sample]}" @click="${this.toggle}">${this.sample}</button> `;
+    return html`<button
+      class="pad ${this.isActive ? css`is-active` : css``}"
+      style="--border-color: ${padColors[this.sample]}"
+      @click="${this.toggle}"
+    >
+      &nbsp;
+    </button> `;
   }
 }

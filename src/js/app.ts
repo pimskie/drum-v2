@@ -66,8 +66,10 @@ export default class App extends LitElement {
     this._playSamples(activeSamples);
   }
 
-  private _playSamples(samples: Sample[]) {
-    samples.forEach((sample) => this._output.playSample(sample));
+  private _playSamples(samples: { sample: Sample; volume: number }[]) {
+    samples.forEach(({ sample, volume }) =>
+      this._output.playSample(sample, volume),
+    );
   }
 
   protected render() {

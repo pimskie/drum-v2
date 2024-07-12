@@ -28,8 +28,13 @@ export default class Rack extends LitElement {
     this.samples = [...defaultSamples];
   }
 
-  public getActiveSamples(step: number): Sample[] {
-    const activeSamples = [...this._rowElements].filter((r) => r.isActive(step)).map((r) => r.sample);
+  public getActiveSamples(step: number): { sample: Sample; volume: number }[] {
+    const activeSamples = [...this._rowElements]
+      .filter((r) => r.isActive(step))
+      .map((r) => ({
+        sample: r.sample,
+        volume: r.volume,
+      }));
 
     return activeSamples;
   }
@@ -52,7 +57,12 @@ export default class Rack extends LitElement {
     const availableSamples = this._getAvailableSampleOptions();
 
     if (availableSamples.length) {
-      return html` <x-sample-selector .samples="${availableSamples}" @add-sample="${this._onAddRow}"></x-sample-selector> `;
+      return html`
+        <x-sample-selector
+          .samples="${availableSamples}"
+          @add-sample="${this._onAddRow}"
+        ></x-sample-selector>
+      `;
     }
 
     return;
@@ -62,7 +72,12 @@ export default class Rack extends LitElement {
     return html`
       <h1>Samples</h1>
       <div class="rack">
-        <div class="rack__rows">${this.samples.map((sample) => html`<x-row sample="${sample}" @delete="${this._onDeleteRow}" />`)}</div>
+        <div class="rack__rows">
+          ${this.samples.map(
+            (sample) =>
+              html`<x-row sample="${sample}" @delete="${this._onDeleteRow}" />`,
+          )}
+        </div>
         <div class="rack__controls">${this._renderSampleSelect()}</div>
       </div>
     `;

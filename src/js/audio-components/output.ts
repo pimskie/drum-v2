@@ -20,18 +20,21 @@ class Output {
     this._mainVolume.connect(this._destination);
   }
 
-  public playSample(sampleId: Sample) {
+  public playSample(sampleId: Sample, volume: number = 1) {
     if (!this.sampleLibrary.has(sampleId)) {
       throw Error(`No sample with id "${sampleId}"`);
     }
+
+    // volume for each sample
+    const sampleGain = new GainNode(this._context);
+    sampleGain.gain.value = volume;
+    sampleGain.connect(this._destination);
 
     const audioBuffer: AudioBuffer = this.sampleLibrary.get(sampleId)!;
     const sourceNode = this._context.createBufferSource();
 
     sourceNode.buffer = audioBuffer;
-
-    sourceNode.connect(this._mainVolume);
-
+    sourceNode.connect(sampleGain);
     sourceNode.start();
   }
 }
