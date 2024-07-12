@@ -5,19 +5,27 @@ import '@/components/pad';
 import XPad from '@/components/pad';
 import { Sample } from '@/types/Sample';
 
+import { steps } from '@/config';
 @customElement('x-row')
 export default class Row extends LitElement {
   static styles = css`
-    .row {
+    :host {
       display: grid;
-      grid-template-columns: 1fr 10fr auto;
+      grid-template-columns: subgrid;
       gap: var(--size-6);
+      grid-column: 1 / -1;
+      place-items: center;
+    }
+
+    .row__config {
+      place-self: start;
     }
 
     .row__pads {
       display: grid;
-      grid-template-columns: repeat(var(--steps), 1fr);
-      gap: var(--size-6);
+      grid-template-columns: subgrid;
+      grid-column: 2 / -2;
+      place-items: center;
     }
 
     .volume-input {
@@ -27,7 +35,7 @@ export default class Row extends LitElement {
   `;
 
   @property({ type: Number })
-  steps: number = 12;
+  steps: number = steps;
 
   @property({ type: String })
   sample: Sample = Sample.bassdrum;
@@ -58,29 +66,27 @@ export default class Row extends LitElement {
     const stepsArray = new Array(this.steps).fill(0);
 
     return html`
-      <div class="row" style="--steps: ${this.steps}">
-        <div class="row__config">
-          <div class="row__label">${this.sample}</div>
-          <input
-            class="volume-input"
-            type="number"
-            min="0"
-            max="1"
-            step="0.1"
-            .value="${`${this.volume}`}"
-            @input="${this._onVolumeChanged}"
-          />
-        </div>
-
-        <div class="row__pads">
-          ${stepsArray.map((_, index) => {
-            return html`
-              <x-pad data-index="${index}" sample="${this.sample}"></x-pad>
-            `;
-          })}
-        </div>
-        <button @click="${this._onDelete}">x</button>
+      <div class="row__config">
+        <div class="row__label">${this.sample}</div>
+        <input
+          class="volume-input"
+          type="number"
+          min="0"
+          max="1"
+          step="0.1"
+          .value="${`${this.volume}`}"
+          @input="${this._onVolumeChanged}"
+        />
       </div>
+
+      <div class="row__pads">
+        ${stepsArray.map((_, index) => {
+          return html`
+            <x-pad data-index="${index}" sample="${this.sample}"></x-pad>
+          `;
+        })}
+      </div>
+      <button @click="${this._onDelete}">x</button>
     `;
   }
 }

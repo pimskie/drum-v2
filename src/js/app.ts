@@ -20,6 +20,15 @@ export default class App extends LitElement {
 
       display: grid;
       gap: var(--size-6);
+      grid-template-columns: repeat(12, 1fr);
+    }
+
+    x-rack {
+      grid-column: 1 / -1;
+    }
+
+    x-sequencer {
+      grid-column: 2 / -1;
     }
   `;
 

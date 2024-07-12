@@ -10,9 +10,33 @@ import { defaultSamples, allSamples } from '@/config/samples';
 @customElement('x-rack')
 export default class Rack extends LitElement {
   static styles = css`
-    .rack__rows {
+    :host {
+      display: grid;
+      grid-template-columns: subgrid;
+    }
+
+    .rack {
       display: grid;
       gap: var(--size-6);
+      grid-template-columns: subgrid;
+      grid-column: 1 / -1;
+    }
+
+    .rack__rows {
+      display: grid;
+      grid-template-columns: subgrid;
+      grid-column: 1 / -1;
+      gap: var(--size-6);
+    }
+
+    .rack__controls {
+      display: grid;
+      grid-template-columns: subgrid;
+      grid-column: 1 / -1;
+    }
+
+    x-sample-selector {
+      grid-column: 1 / -1;
     }
   `;
 
@@ -70,7 +94,9 @@ export default class Rack extends LitElement {
 
   render() {
     return html`
-      <h1>Samples</h1>
+      <div class="rack__title">
+        <h1>Samples</h1>
+      </div>
       <div class="rack">
         <div class="rack__rows">
           ${this.samples.map(
@@ -78,6 +104,7 @@ export default class Rack extends LitElement {
               html`<x-row sample="${sample}" @delete="${this._onDeleteRow}" />`,
           )}
         </div>
+
         <div class="rack__controls">${this._renderSampleSelect()}</div>
       </div>
     `;
