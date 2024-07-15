@@ -14,33 +14,6 @@ export default class Sequencer extends LitElement {
       grid-template-columns: subgrid;
     }
 
-    .sequencer__steps {
-      display: grid;
-      grid-template-columns: subgrid;
-      gap: var(--size-6);
-      grid-column: 1 / -1;
-
-      text-align: center;
-    }
-
-    .sequencer__step {
-      width: 100%;
-      height: 2rem;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: var(--radius-2);
-      background: transparent;
-
-      transition: background-color 0.15s var(--ease-in-3);
-    }
-
-    .sequencer__step.is-active {
-      background-color: var(--red-12);
-    }
-
     .sequencer__controls {
       grid-column: 1 / -1;
       display: flex;
@@ -107,37 +80,13 @@ export default class Sequencer extends LitElement {
   }
 
   protected render() {
-    const stepsElements = new Array(this.steps)
-      .fill(0)
-      .map(
-        (_, i) => html`
-          <div
-            class="sequencer__step ${this._currentStep === i
-              ? css`is-active`
-              : css``}"
-          >
-            ${i + 1}
-          </div>
-        `,
-      );
-
     return html`
-      <div class="sequencer__steps">${stepsElements}</div>
       <div class="sequencer__controls">
         <div>
-          <button @click="${this._toggle}">
-            ${this._isActive ? 'Stop' : 'Play'}
-          </button>
+          <button @click="${this._toggle}">${this._isActive ? 'Stop' : 'Play'}</button>
         </div>
 
-        <input
-          ${ref(this._tempoElement)}
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          @input="${this._onTempoSliderChanged}"
-        />
+        <input ${ref(this._tempoElement)} type="range" min="0" max="1" step="0.1" @input="${this._onTempoSliderChanged}" />
       </div>
     `;
   }
