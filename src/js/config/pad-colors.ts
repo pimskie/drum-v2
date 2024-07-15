@@ -6,6 +6,7 @@ const padColors: PadColors = {
   bassdrum: '#FFF455',
   clap: '#FFC700',
   kick: '#EE4E4E',
+  cowbell: 'aquablue',
 };
 
 export { padColors };

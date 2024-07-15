@@ -6,13 +6,63 @@ import XRow from '@/components/row';
 import '@/components/sample-selector';
 import { Sample } from '@/types/Sample';
 import { defaultSamples, allSamples } from '@/config/samples';
+import { steps } from '@/config';
 
 @customElement('x-rack')
 export default class Rack extends LitElement {
   static styles = css`
-    .rack__rows {
+    :host {
+      display: grid;
+      grid-template-columns: subgrid;
+    }
+
+    .rack {
       display: grid;
       gap: var(--size-6);
+      grid-template-columns: subgrid;
+      grid-column: 1 / -1;
+    }
+
+    .rack__rows {
+      display: grid;
+      grid-template-columns: subgrid;
+      grid-column: 1 / -1;
+      gap: var(--size-6);
+    }
+
+    .rack__controls {
+      display: grid;
+      grid-template-columns: subgrid;
+      grid-column: 1 / -1;
+    }
+
+    .rack__steps {
+      display: grid;
+      grid-template-columns: subgrid;
+      grid-column: 2 / -1;
+      place-items: center;
+    }
+
+    .rack__step {
+      width: 100%;
+      height: 2rem;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: var(--radius-2);
+      background: transparent;
+
+      transition: background-color 0.1s var(--ease-in-3);
+    }
+
+    .rack__step.is-active {
+      background-color: var(--red-12);
+    }
+
+    x-sample-selector {
+      grid-column: 1 / -1;
     }
   `;
 
@@ -21,6 +71,12 @@ export default class Rack extends LitElement {
 
   @property({ type: Array })
   public samples: Sample[] = [];
+
+  @property({ type: Number })
+  public steps: number = steps;
+
+  @property({ type: Number })
+  public currentStep?: number;
 
   constructor() {
     super();
@@ -57,27 +113,28 @@ export default class Rack extends LitElement {
     const availableSamples = this._getAvailableSampleOptions();
 
     if (availableSamples.length) {
-      return html`
-        <x-sample-selector
-          .samples="${availableSamples}"
-          @add-sample="${this._onAddRow}"
-        ></x-sample-selector>
-      `;
+      return html` <x-sample-selector .samples="${availableSamples}" @add-sample="${this._onAddRow}"></x-sample-selector> `;
     }
 
     return;
   }
 
   render() {
+    const stepsArray = new Array(this.steps).fill(0);
+
     return html`
-      <h1>Samples</h1>
+      <div class="rack__title">
+        <h1>Samples</h1>
+      </div>
       <div class="rack">
-        <div class="rack__rows">
-          ${this.samples.map(
-            (sample) =>
-              html`<x-row sample="${sample}" @delete="${this._onDeleteRow}" />`,
-          )}
+        <div class="rack__rows">${this.samples.map((sample) => html`<x-row sample="${sample}" @delete="${this._onDeleteRow}" />`)}</div>
+
+        <div class="rack__steps">
+          ${stepsArray.map((_, index) => {
+            return html` <div class="rack__step ${this.currentStep === index ? css`is-active` : css``}">${index + 1}</div> `;
+          })}
         </div>
+
         <div class="rack__controls">${this._renderSampleSelect()}</div>
       </div>
     `;

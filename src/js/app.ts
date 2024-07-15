@@ -20,6 +20,19 @@ export default class App extends LitElement {
 
       display: grid;
       gap: var(--size-6);
+      grid-template-columns: repeat(12, 1fr);
+
+      border-radius: var(--radius-2);
+      background: #9e9e9e;
+      padding: var(--size-5);
+    }
+
+    x-rack {
+      grid-column: 1 / -1;
+    }
+
+    x-sequencer {
+      grid-column: 1 / -1;
     }
   `;
 
@@ -34,6 +47,9 @@ export default class App extends LitElement {
 
   @state()
   protected _output: Output;
+
+  @state()
+  protected _step?: number;
 
   constructor() {
     super();
@@ -60,22 +76,21 @@ export default class App extends LitElement {
   private _onStepChanged(e: CustomEvent) {
     const { detail } = e;
     const { step } = detail;
-
     const activeSamples = this._rackElement.value!.getActiveSamples(step);
+
+    this._step = step;
 
     this._playSamples(activeSamples);
   }
 
   private _playSamples(samples: { sample: Sample; volume: number }[]) {
-    samples.forEach(({ sample, volume }) =>
-      this._output.playSample(sample, volume),
-    );
+    samples.forEach(({ sample, volume }) => this._output.playSample(sample, volume));
   }
 
   protected render() {
     return html`
       <div class="app">
-        <x-rack ${ref(this._rackElement)}></x-rack>
+        <x-rack .currentStep="${this._step}" ${ref(this._rackElement)}></x-rack>
         <x-sequencer @step-changed="${this._onStepChanged}"></x-sequencer>
       </div>
     `;

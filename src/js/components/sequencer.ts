@@ -4,44 +4,25 @@ import { Ref, ref, createRef } from 'lit/directives/ref.js';
 
 import { getNextStep } from '@/utils/stepper';
 import { getTempo } from '@/utils/get-tempo';
+import { steps } from '@/config';
 
 @customElement('x-sequencer')
 export default class Sequencer extends LitElement {
   static styles = css`
-    .sequencer__steps {
+    :host {
       display: grid;
-      grid-template-columns: repeat(var(--steps), 1fr);
-      gap: var(--size-6);
-
-      text-align: center;
-    }
-
-    .sequencer__step {
-      width: 100%;
-      height: 2rem;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: var(--radius-2);
-      background: transparent;
-
-      transition: background-color 0.15s var(--ease-in-3);
-    }
-
-    .sequencer__step.is-active {
-      background-color: var(--red-12);
+      grid-template-columns: subgrid;
     }
 
     .sequencer__controls {
+      grid-column: 1 / -1;
       display: flex;
       gap: var(--size-3);
     }
   `;
 
   @property({ type: Number })
-  steps: number = 10;
+  steps: number = steps;
 
   @state()
   private _isActive: boolean = false;
@@ -67,7 +48,7 @@ export default class Sequencer extends LitElement {
   private _start() {
     clearInterval(this._intervalId);
 
-    this._intervalId = setInterval(() => {
+    this._intervalId = window.setInterval(() => {
       this._updateStep();
     }, this.tempo);
   }
@@ -99,18 +80,13 @@ export default class Sequencer extends LitElement {
   }
 
   protected render() {
-    const stepsElements = new Array(this.steps).fill(0).map((_, i) => html` <div class="sequencer__step ${this._currentStep === i ? css`is-active` : css``}">${i + 1}</div> `);
-
     return html`
-      <div class="sequencer" style="--steps: ${this.steps + 1}">
-        <div class="sequencer__steps">${stepsElements}</div>
-        <div class="sequencer__controls">
-          <div>
-            <button @click="${this._toggle}">${this._isActive ? 'Stop' : 'Play'}</button>
-          </div>
-
-          <input ${ref(this._tempoElement)} type="range" min="0" max="1" step="0.1" @input="${this._onTempoSliderChanged}" />
+      <div class="sequencer__controls">
+        <div>
+          <button @click="${this._toggle}">${this._isActive ? 'Stop' : 'Play'}</button>
         </div>
+
+        <input ${ref(this._tempoElement)} type="range" min="0" max="1" step="0.1" @input="${this._onTempoSliderChanged}" />
       </div>
     `;
   }
