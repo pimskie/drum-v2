@@ -4,6 +4,7 @@ import '@/components/row';
 
 import XRow from '@/components/row';
 import '@/components/sample-selector';
+import '@/components/heading';
 import { Sample } from '@/types/Sample';
 import { defaultSamples, allSamples } from '@/config/samples';
 import { steps } from '@/config';
@@ -131,7 +132,7 @@ export default class Rack extends LitElement {
 
     return html`
       <div class="rack__title">
-        <h1>Samples</h1>
+        <x-heading>Samples</x-heading>
       </div>
       <div class="rack">
         <div class="rack__rows">
