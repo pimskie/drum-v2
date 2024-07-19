@@ -8,7 +8,7 @@ import { loadLibrary } from '@/utils/library-loader';
 import '@/components/rack';
 import '@/components/sequencer';
 
-import { Output } from '@/audio-components/output';
+import { play } from '@/utils/audio';
 
 import XRack from '@/components/rack';
 
@@ -45,15 +45,10 @@ export default class App extends LitElement {
   protected _sampleLibrary?: Map<string, AudioBuffer>;
 
   @state()
-  protected _output: Output;
-
-  @state()
   protected _step?: number;
 
   constructor() {
     super();
-
-    this._output = new Output();
 
     this._init();
   }
@@ -64,10 +59,7 @@ export default class App extends LitElement {
 
   private async _loadLibrary() {
     this._isLoading = true;
-
     this._sampleLibrary = await loadLibrary();
-
-    this._output.sampleLibrary = this._sampleLibrary;
 
     this._isLoading = false;
   }
@@ -83,9 +75,11 @@ export default class App extends LitElement {
   }
 
   private _playSamples(samples: { sample: Sample; volume: number }[]) {
-    samples.forEach(({ sample, volume }) =>
-      this._output.playSample(sample, volume),
-    );
+    samples.forEach(({ sample, volume }) => {
+      const audioBuffer = this._sampleLibrary!.get(sample)!;
+
+      play(audioBuffer, volume);
+    });
   }
 
   protected render() {
