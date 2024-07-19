@@ -15,16 +15,16 @@ export default class Pad extends LitElement {
       border: 3px solid var(--border-color);
       border-radius: var(--radius-3);
 
-      filter: contrast(0.8);
+      opacity: 0.3;
 
       transition:
-        filter 0.5s var(--ease-out-3),
+        opacity 0.1s var(--ease-out-3),
         transform 0.1s var(--ease-out-3);
     }
 
     .pad.is-active {
-      filter: contrast(2);
-      transform: scale(1.04);
+      opacity: 1;
+      transform: scale(0.8);
     }
   `;
 
