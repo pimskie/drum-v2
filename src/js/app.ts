@@ -19,7 +19,6 @@ export default class App extends LitElement {
       position: relative;
 
       display: grid;
-      gap: var(--size-2);
       grid-template-columns: repeat(18, 1fr);
 
       border-radius: var(--radius-2);
