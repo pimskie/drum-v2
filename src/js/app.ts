@@ -19,8 +19,7 @@ export default class App extends LitElement {
       position: relative;
 
       display: grid;
-      gap: var(--size-6);
-      grid-template-columns: repeat(12, 1fr);
+      grid-template-columns: repeat(18, 1fr);
 
       border-radius: var(--radius-2);
       background: #9e9e9e;
@@ -84,7 +83,9 @@ export default class App extends LitElement {
   }
 
   private _playSamples(samples: { sample: Sample; volume: number }[]) {
-    samples.forEach(({ sample, volume }) => this._output.playSample(sample, volume));
+    samples.forEach(({ sample, volume }) =>
+      this._output.playSample(sample, volume),
+    );
   }
 
   protected render() {

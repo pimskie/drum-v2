@@ -18,7 +18,6 @@ export default class Rack extends LitElement {
 
     .rack {
       display: grid;
-      gap: var(--size-6);
       grid-template-columns: subgrid;
       grid-column: 1 / -1;
     }
@@ -27,7 +26,10 @@ export default class Rack extends LitElement {
       display: grid;
       grid-template-columns: subgrid;
       grid-column: 1 / -1;
-      gap: var(--size-6);
+    }
+
+    x-row:nth-child(even) {
+      background: #828181;
     }
 
     .rack__controls {
@@ -113,7 +115,12 @@ export default class Rack extends LitElement {
     const availableSamples = this._getAvailableSampleOptions();
 
     if (availableSamples.length) {
-      return html` <x-sample-selector .samples="${availableSamples}" @add-sample="${this._onAddRow}"></x-sample-selector> `;
+      return html`
+        <x-sample-selector
+          .samples="${availableSamples}"
+          @add-sample="${this._onAddRow}"
+        ></x-sample-selector>
+      `;
     }
 
     return;
@@ -127,11 +134,24 @@ export default class Rack extends LitElement {
         <h1>Samples</h1>
       </div>
       <div class="rack">
-        <div class="rack__rows">${this.samples.map((sample) => html`<x-row sample="${sample}" @delete="${this._onDeleteRow}" />`)}</div>
+        <div class="rack__rows">
+          ${this.samples.map(
+            (sample) =>
+              html`<x-row sample="${sample}" @delete="${this._onDeleteRow}" />`,
+          )}
+        </div>
 
         <div class="rack__steps">
           ${stepsArray.map((_, index) => {
-            return html` <div class="rack__step ${this.currentStep === index ? css`is-active` : css``}">${index + 1}</div> `;
+            return html`
+              <div
+                class="rack__step ${this.currentStep === index
+                  ? css`is-active`
+                  : css``}"
+              >
+                ${index + 1}
+              </div>
+            `;
           })}
         </div>
 

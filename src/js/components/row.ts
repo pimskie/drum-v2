@@ -12,9 +12,12 @@ export default class Row extends LitElement {
     :host {
       display: grid;
       grid-template-columns: subgrid;
-      gap: var(--size-6);
       grid-column: 1 / -1;
       place-items: center;
+
+      padding: var(--size-3);
+
+      border-radius: var(--radius-2);
     }
 
     .row__config {
