@@ -38,12 +38,6 @@ export default class Pad extends LitElement {
     this.isActive = !this.isActive;
   }
 
-  constructor() {
-    super();
-
-    this.isActive = Math.random() >= 0.5;
-  }
-
   render() {
     return html`<button
       class="pad ${this.isActive ? css`is-active` : css``}"
