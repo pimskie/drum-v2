@@ -17,4 +17,4 @@ const play = (audioBuffer: AudioBuffer, volume: number = 1) => {
   audioNode.start();
 };
 
-export { play };
+export { context, play };
