@@ -19,6 +19,10 @@ export default class Sequencer extends LitElement {
       display: flex;
       gap: var(--size-3);
     }
+
+    button {
+      padding: var(--size-3);
+    }
   `;
 
   @property({ type: Number })
