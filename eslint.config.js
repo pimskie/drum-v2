@@ -9,7 +9,9 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   eslintConfigPrettier,
-
+  {
+    ignores: ['.vercel/*', 'dist/*'],
+  },
   {
     files: ['**/vite.config.mjs'],
     languageOptions: { globals: globals.node },

@@ -1,5 +1,5 @@
 import { customElement, property, state } from 'lit/decorators.js';
-import { html, LitElement } from 'lit';
+import { html, LitElement, css } from 'lit';
 import { Ref, ref, createRef } from 'lit/directives/ref.js';
 
 import '@/components/row';
@@ -8,6 +8,13 @@ import { Sample } from '@/types/Sample';
 
 @customElement('x-sample-selector')
 export default class SampleSelector extends LitElement {
+  static styles = css`
+    select,
+    button {
+      padding: var(--size-3);
+    }
+  `;
+
   @property({ type: Array })
   samples: Sample[] = [];
 
@@ -29,7 +36,9 @@ export default class SampleSelector extends LitElement {
   render() {
     return html`
       <select name="sample" ${ref(this._selectElement)}>
-        ${this.samples.map((sample) => html` <option value="${sample}">${sample}</option> `)}
+        ${this.samples.map(
+          (sample) => html` <option value="${sample}">${sample}</option> `,
+        )}
       </select>
 
       <button @click="${this._onAdd}">Add</button>
