@@ -25,7 +25,7 @@ jobs:
 
         # https://vercel.com/docs/cli/build
       - name: Build Project Artifacts
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --prod
 
       - name: Deploy artifacts to Vercel
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --prod
