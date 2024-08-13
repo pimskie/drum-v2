@@ -1,13 +1,10 @@
-name: Feature branch integration and deployment
+name: Feature preview on Vercel
 
 env:
   NODE_VERSION: 20
 
 on:
   pull_request:
-    branches:
-      - main
-  push:
     branches:
       - main
 
